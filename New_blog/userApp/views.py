@@ -57,11 +57,11 @@ def editProfile(request, userId):
             print(profile_form.errors)
             messages.error(request, "Error updating profile details.")
 
-            return render(request, template_name='editProfile.html',  context={'profile_form': profile_form, 'user_form': user_form})
+            return render(request, template_name='edit_Profile.html',  context={'profile_form': profile_form, 'user_form': user_form})
     else:
         profile_form = ProfileForm(instance=profile)
         user_form = userForm(instance=user)
-        return render(request, template_name='editProfile.html',  context={'profile_form': profile_form, 'user_form': user_form})
+        return render(request, template_name='edit_Profile.html',  context={'profile_form': profile_form, 'user_form': user_form})
 
 @staff_required
 @login_required
