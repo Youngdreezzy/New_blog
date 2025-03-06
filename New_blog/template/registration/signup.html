@@ -1,0 +1,57 @@
+{% extends "common.html" %}
+{% load static %}
+{% block main_content %}
+
+
+
+<div class="d-flex justify-content-center ">
+    <form method="post" class="container col-md-6 p-4 rounded shadow-lg bg-white" style="margin-top: 100px;">
+        {% csrf_token %}
+
+        <h3 class="text-center text-bold fw-bold mb-4">Sign Up</h3>
+
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                <p class="alert alert-danger">{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+
+        {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label fw-bold">{{ field.label }}</label>
+                <div class="input-group">
+                    {% if field.name == "username" %}
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    {% elif field.name == "email" %}
+                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    {% elif field.name == "password1" or field.name == "password2" %}
+                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    {% endif %}
+                    {{ field }}
+                </div>
+                {% if field.errors %}
+                    <div class="text-danger">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button class="btn btn-dark w-100 py-2 mb-3" type="submit">Sign Up</button>
+
+        
+
+        <p class="text-center">Already have an account? 
+            <a href="{% url 'login' %}" class="text-decoration-none fw-bold">Login</a>
+        </p>
+    </form>
+</div>
+
+<style>
+    .btn-dark:hover {
+    background-color: #696a6d;
+    color: white;
+}
+</style>
+
+{% endblock main_content %}

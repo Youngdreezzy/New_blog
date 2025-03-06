@@ -1,0 +1,54 @@
+{% extends "common.html" %}
+{% load static %}
+{% block main_content %}
+
+
+
+<form method="post" class="container col-md-6 p-4 rounded shadow-lg bg-body-secondary" style="margin-top: 90px; ">
+    {% csrf_token %}
+
+    <h3 class="text-center fw-bold mb-4">Login</h3>
+
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <p class="alert alert-danger">{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+
+    {% for field in form %}
+        <div class="mb-3">
+            <label class="form-label fw-bold">{{ field.label }}</label>
+            <div class="input-group">
+                {% if field.name == "username" %}
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                {% elif field.name == "password" %}
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                {% endif %}
+                {{ field }}
+            </div>
+            {% if field.errors %}
+                <div class="text-danger">
+                    {{ field.errors }}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %} 
+
+    <button class="btn btn-dark w-100 py-2 mb-3" type="submit">Login</button>
+
+    <hr>
+
+    <div class="d-flex justify-content-between">
+        <p class="mb-0">Don’t have an account? <a href="{% url 'signup' %}" class="text-decoration-none fw-bold">Sign up</a></p>
+        <p class="mb-0"><a href="{% url 'password_reset' %}" class="text-decoration-none fw-bold">Forgot password?</a></p>
+    </div>
+</form>
+<style>
+.btn-dark:hover {
+    background-color: #818285;
+    color: white;
+}
+
+</style>
+
+{% endblock main_content %}

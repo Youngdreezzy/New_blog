@@ -1,0 +1,203 @@
+{% extends "common.html" %}
+{% load static %}
+{% block main_content %}
+
+<style>
+
+    .marquee-container {
+        width: 100%;
+        overflow: hidden;  /* Hides overflow text */
+        white-space: nowrap; /* Prevents text from wrapping */
+        position: relative;
+    }
+
+ 
+    .marquee {
+        display: inline-block;
+        font-size: 1rem;
+        font-weight: lighter;
+        color: white;
+        animation: marquee-animation 15s linear infinite;
+    }
+
+    /* Keyframe Animation */
+    @keyframes marquee-animation {
+        from {
+            transform: translateX(100vw);
+        }
+        to {
+            transform: translateX(-100%);
+        }
+    }
+    .card-text { font-size: 16px;
+        /* font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; */
+
+    }
+
+</style>
+
+<div class="container">
+    <div class ="row text-light pt-4" style="background-image: url(https://t4.ftcdn.net/jpg/05/96/62/65/360_F_596626503_jrzjZNYStDexiWxQFqO7oCh6M8PdMlJs.jpg); margin-top: 55px;">
+        
+        <h1 class="mb-4 mt-4 text-center fs-1" style="font-family: fantasy; padding-top: 30px;">Welcome to Holla! Fashion Blog</h1>
+        <h2 class="text-center  fw-light" style="font-family: 'Times New Roman', Times, serif; font-size: 20px;">Your go-to destination for style inspiration, <br>
+            the latest fashion trends and expert tips <br>on elevating your wardrobe. 
+        </h2>
+
+
+        <p class="text-xxl-end">"Simplicity is the keynote of true elegance." <br> -Coco Chanel</p>
+        
+        <div class="marquee-container">
+            <p class="marquee">
+                Stay ahead of the curve with trend forecasts, outfit ideas, and timeless style advice tailored just for you. Holla!
+            </p>
+        </div>
+
+    </div>
+    <!-- <a href="{% url 'add_blog' %}" class="btn btn-primary mb-3">Add New Blog</a> -->
+    
+    <div class="row container" style="margin-top: 80px;">
+        {% for blog in blogs %}
+        <div class=" col-md-4 mb-5 ">
+            <div class="card border-0 shadow-sm mb-4 bg-body-secondary mx-auto" style="width: 300px; height: 500px;">
+                {% if blog.image %}
+                    <a href="{% url 'view_blog' blog.id %}"><img src="{{ blog.image.url }}" class="fixed-img w-100 blog-image" style="height: 250px; object-fit: cover;" alt="Blog Image"></a>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ blog.blog_title }}</h5>
+                    <p class="card-text">{{ blog.content|truncatewords:15 }} <a href="">Holla!!!</a></p>  
+                   <div class="d-flex justify-content-between"> 
+                        <a href="{% url 'view_blog' blog.id %}" class="btn btn-outline-secondary custom-hover ">Read More</a>
+
+                        <form action="{% url 'like_blog' blog.id %}" method="POST">
+                            {% csrf_token %}
+                            {% if user in blog.likes.all %}
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fa-regular fa-heart"></i> {{ blog.total_likes }}
+                                </button>
+                            {% else %}
+                                <button type="submit" class="btn btn-secondary">
+                                    <i class="fa-solid fa-heart"></i>{{ blog.total_likes }}
+                                </button>
+                            {% endif %}
+                        </form>
+                    </div>
+                    <style>
+                        .custom-hover:hover {
+                            transform: translateY(-2px);
+                            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+                        }
+                        .blog-image:hover {
+                            transform: translateY(1px);
+                            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+                        }
+                    </style>
+                </div>
+            </div>
+        </div>
+
+
+        {% empty %}
+        <p>No blogs available.</p>
+        {% endfor %}
+    </div>
+
+    <hr>
+    <div class=" container  d-flex " style="background-color: dimgray;">
+        <div class="fspeech pt-5">
+            <p> <strong style="font-family: cursive;" >Fashion</strong> is more than just clothing; it’s a reflection of culture, personality, 
+                and self-expression. As trends evolve, we see the rise of styles like 'Quiet Luxury,
+                ' where minimalism meets elegance, proving that sometimes, less truly is more. On the other hand, 
+                'Grandpa Chic' is redefining comfort and nostalgia, bringing back oversized knits, vintage tailoring, 
+                and timeless layering. But no matter the trend—whether it's the polished preppy look making a comeback 
+                or the bold statement of dopamine dressing—true style is about confidence.  
+                After all, in a world of ever-changing fashion, the one thing that never goes out of style is being unapologetically yourself.</p>
+            <p class="text-end" style="font-family: fantasy;"><strong>Holla!</strong></p>
+        </div>
+        <div style="width: 2px; height: 500px; background: black; margin: 10px; margin-top: 50px;"></div>
+
+        <div class="carousel-container">
+            <h2 class="text-center dfashion pt-3" style="font-family: cursive;" >Trending Fashion</h2>
+            <div id="customCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active ">
+                        <img src="https://www.realsimple.com/thmb/Z8fdaJOYY22SjZ986EuMGUdlpWQ=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-1496146972-ab30db30a8ee4a5081a2832c2e042b71.jpg" class="d-block w-100" alt="Quiet Luxury">
+                        <div class="carousel-caption">
+                            <a href="{% url 'trending' %}" class="trendurl"><h6 >Quiet Luxury</h6></a>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://www.realsimple.com/thmb/2Nzn5KEjaZYBpW9gEqNszIwyYhs=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-1715271823-14b1804178f14980a0618f1c3ef240cb.jpg" class="d-block w-100" alt="Polished Preppy">
+                        <div class="carousel-caption">
+                            <a href="{% url 'trending' %}" class="trendurl"><h6 >Polished Preppy</h6></a>
+                        </div> 
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://www.realsimple.com/thmb/xiNZttb9CakrToQpBEkY9NOuFCg=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-1696612096-672ea69b67cf49e8b3eaddc4275dc6fa.jpg" class="d-block w-100" alt="Grandpa Chic">
+                        <div class="carousel-caption">
+                            <a href="{% url 'trending' %}" class="trendurl"><h6 >Grandpa Chic</h6></a>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://www.realsimple.com/thmb/tdmdGJMFD0utjM88sphTalvaA9M=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-829254956-55ba1e51bdec43dd8bc5c2032cd30c3b.jpg" class="d-block w-100" alt="Jelly Fashion">
+                        <div class="carousel-caption">
+                            <a href="{% url 'trending' %}" class="trendurl"><h6 >Jelly Fashion</h6></a>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://www.refinery29.com/images/11835335.jpg?format=jpg&width=1440&height=2160&quality=80" class="d-block w-100" alt="Sports Style">
+                        <div class="carousel-caption">
+                            <a href="{% url 'trending' %}" class="trendurl"><h6 >Sports Style</h6></a>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#customCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#customCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .fspeech {
+            width: 350px;
+            height: 500px; 
+            margin: auto;
+        }
+        .carousel-container {
+            width: 300px;
+            height: 600px; 
+            margin: auto;
+        }
+        .carousel-inner img {
+            width: 200px;
+            height: 450px;
+            object-fit: cover; 
+            border-radius: 10px;
+            
+        }
+        .trendurl {
+            text-decoration: none;
+            color: darkgrey;
+        }
+        .carousel-caption {
+            position: static; 
+            background: #000;
+            color: rgb(239, 148, 115);
+            padding: 5px;
+            border-radius: 10px;
+        }
+        .dfashion {
+            color: rgb(34, 33, 33);
+        }
+    </style>
+
+
+
+</div>
+{% endblock main_content %}

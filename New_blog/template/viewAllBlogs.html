@@ -1,0 +1,58 @@
+{% extends "common.html" %}
+{% load static %}
+{% block main_content %}
+
+<div class="container">
+    <h1 class="text-center h3">All Blogs</h1>
+    <hr>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Image</th>
+            <th scope="col">Title</th>
+            <th scope="col">Content</th>
+          </tr>
+        </thead>
+        <tbody>
+            
+            {% for blog in all_blog %}
+                
+                    <tr>
+                        <th scope="row">{{blog.id}}</th>
+                        
+                        {% if blog.image %}
+                        <td><img src="{{ blog.image.url }}" alt="{{ blog.blog_title }}" height="40"></td>
+                        {% else %}
+                        <td><img src="" alt="{{ blog.blog_title }}" height="40"></td>
+                        {% endif %}
+                            
+                        <td>
+                            <a href="{% url 'view_blog' blog.id %}" class="text-black">{{blog.blog_title}}</a>
+                        </td>
+                        <td>{{ blog.content|truncatewords:15 }}</td>
+                        <td>
+                            
+                            {% if blog.approved %}
+                                <a href="{% url 'approve-reject-blog' blog.id 'reject' %}" class="btn btn-sm
+                                btn-danger"> Reject </a>
+                            {% else %}
+                                <a href="{% url 'approve-reject-blog' blog.id 'approve' %}" class="btn btn-sm
+                                btn-success"> approve </a>
+                            {% endif %}
+                            
+                        </td>   
+                    </tr>
+                   
+
+            {% endfor %}
+                
+
+        </tbody>
+      </table>
+      <p class="text-center"><a href="{% url 'add_blog' %}">Add blog here</a></p>
+
+
+</div>
+
+{% endblock main_content %}
